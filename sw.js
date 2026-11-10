@@ -1,3 +1,4 @@
+// © 2026 Euntae Studio. All rights reserved.
 // Weighly 오프라인 저장소. 앱을 고친 뒤에는 아래 버전 숫자를 올려주세요.
 const CACHE = 'weighly-v1';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
