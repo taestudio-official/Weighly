@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="description" content="하루 한 번 몸무게를 기록하고 흐름을 보는 앱">
 <meta name="author" content="Euntae Studio">
 <meta name="copyright" content="© 2026 Euntae Studio. All rights reserved.">
@@ -73,8 +73,8 @@
 .zw{display:flex;flex-direction:column;gap:14px;zoom:var(--z,1)}
 .zw.sz{gap:16px}
 [hidden]{display:none!important}
-html,body{height:100%}
-body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;-webkit-tap-highlight-color:transparent;overflow:hidden}
+html,body{height:100%;touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{word-break:keep-all;overflow-wrap:break-word;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;-webkit-tap-highlight-color:transparent;overflow:hidden}
 button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{cursor:pointer}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -191,6 +191,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .tdots i{width:6px;height:6px;border-radius:3px;background:var(--line)}
 .tdots i.on{background:var(--fg);width:16px}
 .srow.idle .seg button[aria-pressed="true"]{background:transparent;box-shadow:inset 0 0 0 1.5px var(--faint);color:var(--fg)}
+.srow.rest .seg button[aria-pressed="true"]{background:transparent;box-shadow:none;color:var(--sub);font-weight:400}
+.srow.rest .sublbl{opacity:.8}
 .dpinline{position:relative}
 .dpov{position:absolute;top:50px;z-index:5;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 10px 28px rgba(0,0,0,.16);padding:6px}
 .dpov button{height:40px;border:0;background:none;border-radius:10px;font-size:15px;color:var(--fg)}
@@ -201,6 +203,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 .ph{color:var(--faint);font-weight:500}
 .seg button:disabled{opacity:.7;cursor:default}
 .sublbl{padding-left:16px;font-size:14px;color:var(--sub)}
+:root[data-fs="l"] .sublbl{padding-left:8px}
+/* Choice boxes keep one real size whatever the text size (zoom is undone here). */
+.srow .seg{height:calc(34px / var(--z,1))!important}
+.srow .seg button{height:calc(30px / var(--z,1))!important}
+.srow .seg{width:calc(200px / var(--z,1))!important;box-sizing:border-box}
+.srow .seg button{flex:1 1 0;min-width:0;padding:0 6px}
+.srow > .seg{min-height:0}
+.srow .seg button{white-space:nowrap;overflow:hidden}
+.srow > span:first-child{flex-shrink:1;min-width:0}
+.srow > .seg{flex-shrink:0}
+.lhead .hu{display:inline}
+:root[data-fs="l"] .lhead .hu{display:block}
 .tip{display:flex;align-items:center;gap:6px;font-size:12px;line-height:1.5;color:var(--sub);margin:0}
 .tip svg{width:14px;height:14px;flex:none;color:var(--faint)}
 .dpn{width:44px;height:44px;border:0;background:none;color:var(--fg);display:flex;align-items:center;justify-content:center;padding:0}
@@ -322,6 +336,14 @@ svg.chart{touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:cr
 .dpick input{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;padding:0;margin:0}
 .avatar{width:40px;height:40px;border-radius:20px;background:var(--accentSoft);color:var(--accentInk);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex:none}
 .avatar svg{width:22px;height:22px}
+.avatar.emo{font-size:22px;font-weight:400}
+.avpick{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.avpick button{aspect-ratio:1;border:0;border-radius:14px;background:var(--track);font-size:24px;display:flex;align-items:center;justify-content:center;color:var(--accentInk);font-weight:700;padding:0}
+.avpick button svg{width:24px;height:24px}
+.avpick button .avnone{color:var(--faint)}
+.avpick button[aria-pressed="true"] .avnone{color:var(--accent)}
+.avpick button[aria-pressed="true"]{background:var(--accentSoft);box-shadow:inset 0 0 0 2px var(--accent)}
+.flabel{font-size:13px;color:var(--sub);margin:4px 0 -4px}
 .tin{flex:1;min-width:0;height:44px;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;padding:0 12px;font-size:15px;background:var(--card)}
 input::placeholder,textarea::placeholder{color:var(--faint)}
 .flagbtn{width:44px;height:44px;flex:none;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--sub);display:flex;align-items:center;justify-content:center;padding:0}
@@ -342,7 +364,7 @@ input::placeholder,textarea::placeholder{color:var(--faint)}
 .picky button[aria-pressed="true"],.pickm button[aria-pressed="true"]{background:var(--btn);color:var(--btnFg);border-color:var(--btn);font-weight:600}
 .pickm button:disabled{color:var(--disabled)}
 textarea{width:100%;box-sizing:border-box;min-height:120px;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:12px;background:var(--bg);resize:vertical}
-#toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--btn);color:var(--btnFg);padding:10px 18px;border-radius:20px;font-size:14px;z-index:70;pointer-events:none;animation:fade .2s}
+#toast{position:fixed;left:50%;top:40%;transform:translateX(-50%);background:var(--btn);color:var(--btnFg);padding:10px 18px;border-radius:20px;font-size:14px;z-index:70;pointer-events:none;animation:fade .2s}
 
 /* lock */
 #lock{position:fixed;inset:0;z-index:80;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:24px}
@@ -420,7 +442,7 @@ ko:{
   errRange:'기간을 다시 확인해 주세요.', errNoData:'이 기간에는 몸무게 기록이 없어요.', errName:'이름을 적어 주세요.',
   archiveEmpty:'아직 저장된 기간이 없어요.', deleteArchive:'이 기간 삭제', deleteArchiveQ:'이 기간을 보관함에서 삭제할까요?',
   cardHint:'카드를 누르면 그 기간의 그래프를 볼 수 있어요.', targetWas:v=>`목표 ${v}`,
-  account:'계정', nameEmpty:'이름을 정해주세요', nameHint:'앱에서 불릴 이름이에요.', nameTitle:'이름', namePh:'이름', signIn:'계정 연동', 
+  account:'계정', nameEmpty:'이름을 정해주세요', nameHint:'홈 화면에서 불러드릴 이름이에요.', nameTitle:'이름', avatarTitle:'프로필 아이콘', avatarNone:'아이콘 없음', nearGoal:r=>`거의 다 왔어요! 목표까지 ${r} 남았어요.`, nearGoalH:'거의 다 왔어요! 목표가 코앞이에요.', namePh:'이름', signIn:'계정 연동', 
   settings:'설정', security:'보안', appLock:'앱 잠금', changePin:'비밀번호 변경', faceId:'Face ID / 지문으로 열기',
   later:'아이폰 앱 버전에서 지원할 예정이에요.', notif:'알림', notifRow:'측정 알림',
   display:'표시', language:'언어', unit:'단위', weekStart:'한 주 시작', sun:'일요일', mon:'월요일',
@@ -448,7 +470,7 @@ ko:{
   skip:'건너뛰기', next:'다음', startApp:'시작하기', tutAgain:'튜토리얼 다시 보기',
   appSec:'앱', appVer:'버전', rate:'평가하기', theme:'테마', thAuto:'자동', thLight:'라이트', thDark:'다크', darkStyle:'다크 스타일', lightStyle:'라이트 스타일', lsA:'세이지', lsB:'스톤', dsA:'그래파이트', dsB:'앰버', fontSize:'글씨 크기', fsS:'작게', fsM:'보통', fsL:'크게', items:'기록 항목', itemsAll:'전체', itemsW:'몸무게만', rangeTitle:'그래프 기간', apply:'적용', resetRange:'최근 기간으로 돌아가기', rateLater:'앱스토어에 출시하면 열려요.', privacy:'개인정보 처리 방침', contact:'문의',
   privacyBody:['입력한 몸무게, 체지방, 골격근량, 메모, 목표는 이 기기 안에만 저장돼요.', '이 앱은 기록을 다른 곳으로 보내거나 모으지 않아요.', '백업 파일은 직접 만들 때만 생기고, 보관은 사용하는 분이 직접 해요.', '화면 글꼴을 불러올 때 Google Fonts에 연결돼요.', '계정 연동 같은 기능이 생기면 이 내용을 고쳐서 알려드릴게요.'],
-  contactBody:'궁금한 점이나 고쳤으면 하는 점을 보내주세요.', contactAddr:'[문의 이메일]'
+  contactBody:'궁금한 점이나 고쳤으면 하는 점을 보내주세요.', contactAddr:'taestudio.support@gmail.com'
 },
 en:{
   tabHome:'Home', tabCal:'Calendar', tabList:'List', tabChart:'Charts', tabSet:'Settings',
@@ -492,7 +514,7 @@ en:{
   errRange:'Please check the dates.', errNoData:'No weight entries in this period.', errName:'Add a name.',
   archiveEmpty:'No saved periods yet.', deleteArchive:'Delete this period', deleteArchiveQ:'Delete this period from the archive?',
   cardHint:'Tap a card to see its chart.', targetWas:v=>`Goal ${v}`,
-  account:'Account', nameEmpty:'Add your name', nameHint:'What the app will call you.', nameTitle:'Name', namePh:'Name', signIn:'Sign in & sync',
+  account:'Account', nameEmpty:'Add your name', nameHint:'What the Home screen will call you.', nameTitle:'Name', avatarTitle:'Profile icon', avatarNone:'No icon', nearGoal:r=>`Almost there! Just ${r} to go.`, nearGoalH:'Almost there! Your goal is within reach.', namePh:'Name', signIn:'Sign in & sync',
   settings:'Settings', security:'Security', appLock:'App lock', changePin:'Change passcode', faceId:'Unlock with Face ID / Touch ID',
   later:'Coming in the iPhone app version.', notif:'Reminders', notifRow:'Weigh-in reminder',
   display:'Display', language:'Language', unit:'Units', weekStart:'Week starts on', sun:'Sunday', mon:'Monday',
@@ -501,14 +523,14 @@ en:{
   backupNote:'Entries are stored only on this phone. Make a backup before switching phones.',
   pinNew:'New 4-digit passcode', pinAgain:'Enter it again', pinMismatch:'Passcodes didn’t match.\nStart again.',
   pinEnter:'Enter passcode', pinWrong:'Wrong passcode.',
-  pinWarn:'If you forget the passcode you can’t open the app.\nMake a backup first.', lockOffQ:'Turn off app lock?', turnOff:'Turn off', lockOn:'App lock is on.',
+  pinWarn:'If you forget the passcode you can’t open the app.\nPlease make a backup first.', lockOffQ:'Turn off app lock?', turnOff:'Turn off', lockOn:'App lock is on.',
   exportTitle:'Backup file', exportText:'If the file doesn’t save, copy the text below and keep it somewhere safe.',
   copy:'Copy', copied:'Copied.', copyFail:'Couldn’t copy. Press and hold the text to copy it.',
   importTitle:'Restore backup', importText:'Choose a backup file, or paste the backup text.', chooseFile:'Choose file',
   importDo:'Restore', importQ:'Replace current data with this backup?', importErr:'Couldn’t read this backup.', imported:'Restored.',
   pickTitle:'Year and month', ver:'Weighly ver 0.1', flagDefault:'Marked',
   avg7:'7-day avg', csvB:'Export to Excel', csvTitle:'Excel file', csvText:'If the file doesn’t save, copy the text below and paste it into Excel.', starCol:'Star',
-  pinCur:'Enter your current passcode', prevMonth:m=>`Show ${m} too`,
+  pinCur:'Enter your current passcode', prevMonth:m=>`Show ${m}`,
   tut1T:'Welcome to Weighly!', tut1B:'Log your weight once a day\nand see the trend.\n\nHere’s a quick tour of the main features.',
   tut2T:'Choose your unit', tut2B:'First, pick a weight unit.\n\nYou can change it anytime in Settings.',
   tut3T:'Log today', tut3B:'Tap ‘Log today’s weight’ on Home\nto add today’s entry.\n\nWeigh in at the same time and\nunder the same conditions each day.',
@@ -520,7 +542,7 @@ en:{
   skip:'Skip', next:'Next', startApp:'Get started', tutAgain:'Replay tutorial',
   appSec:'App', appVer:'Version', rate:'Rate', theme:'Theme', thAuto:'Auto', thLight:'Light', thDark:'Dark', darkStyle:'Dark style', lightStyle:'Light style', lsA:'Sage', lsB:'Stone', dsA:'Graphite', dsB:'Amber', fontSize:'Text size', fsS:'Small', fsM:'Default', fsL:'Large', items:'Entries', itemsAll:'All', itemsW:'Weight only', rangeTitle:'Chart period', apply:'Apply', resetRange:'Back to recent period', rateLater:'Available once the app is on the App Store.', privacy:'Privacy policy', contact:'Contact us',
   privacyBody:['Your weight, body fat, muscle, notes and goals are stored only on this device.', 'This app doesn’t send your entries anywhere or collect them.', 'Backup files exist only when you create one, and you keep them yourself.', 'The app connects to Google Fonts to load its typeface.', 'If features like account sync are added, this policy will be updated.'],
-  contactBody:'Send questions or anything you’d like changed.', contactAddr:'[contact email]'
+  contactBody:'Send questions or anything you’d like changed.', contactAddr:'taestudio.support@gmail.com'
 }};
 
 /* ---------- storage ---------- */
@@ -535,11 +557,11 @@ const diffDays = (a,b) => Math.round((parseK(b) - parseK(a)) / 864e5);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function defaults(){ return {records:{}, goal:null, archive:[], sample:false,
-  settings:{lang:'ko', unit:'kg', weekStart:0, hideNum:false, lock:false, pin:null, items:'all', theme:'auto', darkStyle:'a', lightStyle:'a', fs:'m'}}; }
+  settings:{lang:'ko', unit:'kg', weekStart:0, hideNum:false, lock:false, pin:null, items:'all', theme:'auto', darkStyle:'b', lightStyle:'a', fs:'m'}}; }
 
 function sampleState(){
   const s = defaults(); s.sample = true;
-  const t = todayK(); let w = 60.1, seed = 11;
+  const t = todayK(); let w = 61.0, seed = 11;
   const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
   for (let i = 42; i >= 1; i--) {
     w += -0.045 + (rnd() - 0.5) * 0.32;
@@ -667,6 +689,8 @@ function archiveGoal(type, endK){
     type, start:g.start, end:endK, startW:g.startW, endW, target:g.target, pts });
   S.goal = null; persist();
 }
+function callName(){ const n = (S.settings.name || '').trim(); return n && S.settings.avatar ? S.settings.avatar + ' ' + n : n; }
+function withName(x){ const nm = callName(); return !nm ? x : L() === 'en' ? x.replace(/!$/, ', ' + nm + '!') : nm + '님, ' + x; }
 function checkGoal(onlyEnd){
   const g = S.goal; if (!g) return;
   const lw = latestW();
@@ -674,7 +698,7 @@ function checkGoal(onlyEnd){
     const down = g.startW > g.target;
     if ((down && lw.w <= g.target) || (!down && lw.w >= g.target)) {
       archiveGoal('achieved', lw.k);
-      dialog(t('achievedTitle'), t('achievedText'), [{label:t('ok')}, {label:t('newGoal'), kind:'go', fn:openGoal}]);
+      dialog(withName(t('achievedTitle')), t('achievedText'), [{label:t('ok')}, {label:t('newGoal'), kind:'go', fn:openGoal}]);
       return;
     }
   }
@@ -691,6 +715,9 @@ function vHome(){
   if (lw) rel = lw.k === tk ? t('relToday') : (lw.k === addDays(tk,-1) ? t('relYest') : md(lw.k));
   let cheer = t('cheerNone');
   if (lw && lw.prev != null) { const d = lw.w - lw.prev; cheer = d < -0.05 ? t('cheerDown') : (d > 0.05 ? t('cheerUp') : t('cheerSame')); }
+  if (g && lw && lw.k >= g.start) { const left = (g.startW > g.target) ? lw.w - g.target : g.target - lw.w, tot = Math.abs(g.startW - g.target);
+    if (left > 0.05 && (left <= 1 || (tot > 0 && 1 - left / tot >= 0.8))) cheer = hide ? t('nearGoalH') : t('nearGoal', toU(left).toFixed(1) + U()); }
+  const nm = callName(); if (nm) cheer = L() === 'en' ? nm + ', ' + cheer.charAt(0).toLowerCase() + cheer.slice(1) : nm + '님, ' + cheer;
   let goalHtml;
   if (g) {
     const cur = lw ? lw.w : g.startW;
@@ -782,7 +809,7 @@ function vList(){
   return `
   ${ymBar('list', UI.listY, UI.listM, `<button class="plus" data-act="addRecord" aria-label="${t('addTitle')}">${svg('plus')}</button>`)}
   <div class="lcard">
-    <div class="lgrid lhead${wo ? ' wo' : ''}"><span>${t('date')}</span><span>${t('weight')} (${U()})</span>${wo ? '' : `<span>${t('fat')} (%)</span><span>${t('muscle')} (${U()})</span>`}</div>
+    <div class="lgrid lhead${wo ? ' wo' : ''}"><span>${t('date')}</span><span>${t('weight')} <span class="hu">(${U()})</span></span>${wo ? '' : `<span>${t('fat')} <span class="hu">(%)</span></span><span>${t('muscle')} <span class="hu">(${U()})</span></span>`}</div>
     ${any || n > 1 ? body : `<p class="empty">${t('listEmpty')}</p>`}
   </div>
   ${hasOlder ? `<button class="textbtn" data-act="moreMonth">${t('prevMonth', monthName(mm))}</button>` : ''}
@@ -949,13 +976,13 @@ function vSet(){
   const st = S.settings;
   const auto = !st.theme || st.theme === 'auto';
   let curDark = st.theme === 'dark'; try { if (auto) curDark = matchMedia('(prefers-color-scheme: dark)').matches; } catch(_) {}
-  const lRow = st.theme === 'dark' ? ' off' : (auto && curDark ? ' idle' : ''), dRow = st.theme === 'light' ? ' off' : (auto && !curDark ? ' idle' : '');
+  const rest = auto ? ' idle' : ' rest', lRow = curDark ? rest : '', dRow = curDark ? '' : rest;
   const segBtn = (act, v, cur, label, off) => `<button data-act="${act}" data-v="${v}" aria-pressed="${cur === v}" ${off ? 'disabled' : ''}>${label}</button>`;
   return `
   <header class="top"><h1>${t('settings')}</h1></header>
   <span class="stitle">${t('account')}</span>
   <div class="group">
-    <button class="srow" data-act="editName"><span style="display:flex;align-items:center;gap:12px;min-width:0"><span class="avatar">${st.name ? esc(st.name.slice(0, 1)) : svg('user')}</span><span class="lbl"><span>${st.name ? esc(st.name) : t('nameEmpty')}</span><span class="small">${t('nameHint')}</span></span></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true">${IC.chev}</svg></button>
+    <button class="srow" data-act="editName"><span style="display:flex;align-items:center;gap:12px;min-width:0"><span class="avatar${st.avatar ? ' emo' : ''}">${avatarInner()}</span><span class="lbl"><span>${st.name ? esc(st.name) : t('nameEmpty')}</span><span class="small">${t('nameHint')}</span></span></span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true">${IC.chev}</svg></button>
     <div class="srow"><span class="lbl"><span>${t('signIn')}</span><span class="small">${t('later')}</span></span></div>
   </div>
   <span class="stitle">${t('security')}</span>
@@ -971,8 +998,8 @@ function vSet(){
   <span class="stitle">${t('display')}</span>
   <div class="group">
     <div class="srow"><span>${t('theme')}</span><div class="seg eq" style="width:200px">${segBtn('theme','auto',st.theme || 'auto',t('thAuto'))}${segBtn('theme','light',st.theme,t('thLight'))}${segBtn('theme','dark',st.theme,t('thDark'))}</div></div>
-    <div class="srow${lRow}"><span class="sublbl">${t('lightStyle')}</span><div class="seg eq" style="width:200px">${segBtn('lstyle','a',st.lightStyle || 'a',t('lsA'),st.theme === 'dark')}${segBtn('lstyle','b',st.lightStyle,t('lsB'),st.theme === 'dark')}</div></div>
-    <div class="srow${dRow}"><span class="sublbl">${t('darkStyle')}</span><div class="seg eq" style="width:200px">${segBtn('dstyle','b',st.darkStyle,t('dsB'),st.theme === 'light')}${segBtn('dstyle','a',st.darkStyle || 'a',t('dsA'),st.theme === 'light')}</div></div>
+    <div class="srow${lRow}"><span class="sublbl">${t('lightStyle')}</span><div class="seg eq" style="width:200px">${segBtn('lstyle','a',st.lightStyle || 'a',t('lsA'))}${segBtn('lstyle','b',st.lightStyle,t('lsB'))}</div></div>
+    <div class="srow${dRow}"><span class="sublbl">${t('darkStyle')}</span><div class="seg eq" style="width:200px">${segBtn('dstyle','b',st.darkStyle || 'b',t('dsB'))}${segBtn('dstyle','a',st.darkStyle,t('dsA'))}</div></div>
     <div class="srow"><span>${t('fontSize')}</span><div class="seg eq" style="width:200px">${segBtn('fs','s',st.fs,t('fsS'))}${segBtn('fs','m',st.fs || 'm',t('fsM'))}${segBtn('fs','l',st.fs,t('fsL'))}</div></div>
     <div class="srow"><span>${t('language')}</span><div class="seg eq">${segBtn('lang','ko',st.lang,'한국어')}${segBtn('lang','en',st.lang,'English')}</div></div>
     <div class="srow"><span>${t('items')}</span><div class="seg eq">${segBtn('items','all',st.items || 'all',t('itemsAll'))}${segBtn('items','w',st.items,t('itemsW'))}</div></div>
@@ -985,7 +1012,6 @@ function vSet(){
     <button class="srow" data-act="exportCSV"><span>${t('csvB')}</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true">${IC.chev}</svg></button>
     <button class="srow" data-act="exportB"><span>${t('exportB')}</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true">${IC.chev}</svg></button>
     <button class="srow" data-act="importB"><span>${t('importB')}</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true">${IC.chev}</svg></button>
-    ${S.sample ? `<button class="srow" data-act="clearSample"><span>${t('clearSample')}</span><svg class="chev" viewBox="0 0 24 24" aria-hidden="true">${IC.chev}</svg></button>` : ''}
     <button class="srow danger" data-act="clearAll"><span>${t('clearAll')}</span></button>
   </div>
   <p class="small" style="margin:0 4px">${t('backupNote')}</p>
@@ -1005,7 +1031,7 @@ const view = document.getElementById('view'), tabbar = document.getElementById('
 function isDarkNow(){ const th = S.settings.theme || 'auto'; if (th !== 'auto') return th === 'dark'; try { return matchMedia('(prefers-color-scheme: dark)').matches; } catch(_) { return false; } }
 function appIconSvg(){
   const cs = getComputedStyle(document.documentElement), v = n => cs.getPropertyValue(n).trim(), dk = isDarkNow();
-  const bg = dk ? (S.settings.darkStyle === 'b' ? '#7A7167' : '#74767B') : v('--bg'), edge = dk ? 'none' : v('--line'), body = dk ? v('--bg') : v('--accent'), st = v('--accent'), pad = dk ? bg : v('--accentSoft'), op = .35;
+  const bg = dk ? (S.settings.darkStyle === 'a' ? '#74767B' : '#7A7167') : v('--bg'), edge = dk ? 'none' : v('--line'), body = dk ? v('--bg') : v('--accent'), st = v('--accent'), pad = dk ? bg : v('--accentSoft'), op = .35;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="0.5" y="0.5" width="99" height="99" rx="22" fill="${bg}" stroke="${edge}"/><rect x="13" y="13" width="74" height="74" rx="20" fill="${body}"/><rect x="31" y="27" width="38" height="18" rx="4.5" fill="${bg}"/><path d="M50 28.5c.7 4.8 2.5 6.8 7.5 7.5-5 .7-6.8 2.5-7.5 7.5-.7-5-2.5-6.8-7.5-7.5 5-.7 6.8-2.6 7.5-7.5z" fill="${st}"/><rect x="30" y="53" width="16" height="21" rx="7" fill="${pad}" opacity="${op}"/><rect x="54" y="53" width="16" height="21" rx="7" fill="${pad}" opacity="${op}"/></svg>`;
 }
 let iconURL = '';
@@ -1022,10 +1048,10 @@ function setAppIcon(){
 function applyTheme(){
   const r = document.documentElement, th = S.settings.theme || 'auto';
   if (th === 'auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', th);
-  r.setAttribute('data-dark', S.settings.darkStyle === 'b' ? 'b' : 'a');
+  r.setAttribute('data-dark', S.settings.darkStyle === 'a' ? 'a' : 'b');
   r.setAttribute('data-light', S.settings.lightStyle === 'b' ? 'b' : 'a');
   setAppIcon();
-  r.style.setProperty('--z', ({ s:0.9, m:1, l:1.12 })[S.settings.fs || 'm'] || 1);
+  r.setAttribute('data-fs', S.settings.fs || 'm'); r.style.setProperty('--z', ({ s:0.9, m:1, l:1.12 })[S.settings.fs || 'm'] || 1);
 }
 function render(keepScroll){
   const y = view.scrollTop;
@@ -1037,7 +1063,18 @@ function render(keepScroll){
   tabbar.innerHTML = tabs.map(([id, lab, ic]) => `<button class="tab" data-act="tab" data-v="${id}" ${UI.tab === id ? 'aria-current="page"' : ''}>${svg(ic)}${t(lab)}</button>`).join('');
   tabbar.setAttribute('aria-label', L() === 'en' ? 'Menu' : '메뉴');
   if (keepScroll) view.scrollTop = y; else view.scrollTop = 0;
+  fitSubLabels();
 }
+/* If one style label needs two lines, break both the same way so the rows match. */
+function fitSubLabels(){
+  const ls = [...view.querySelectorAll('.sublbl')]; if (!ls.length) return;
+  const lines = l => { const r = document.createRange(); r.selectNodeContents(l); return new Set([...r.getClientRects()].map(x => Math.round(x.top))).size; };
+  /* A choice label that would spill out of its fixed-size box gets smaller text, the same for the whole box. */
+  view.querySelectorAll('.srow .seg').forEach(sg => { const bs = [...sg.querySelectorAll('button')]; let fs = parseFloat(getComputedStyle(bs[0]).fontSize);
+    while (fs > 9 && bs.some(b => b.scrollWidth > b.clientWidth + 0.5)) { fs -= 0.5; bs.forEach(b => b.style.fontSize = fs + 'px'); } });
+  if (ls.some(l => lines(l) > 1)) ls.forEach(l => { const w = l.textContent.split(' '); if (w.length > 1) l.innerHTML = w[0] + '<br>' + w.slice(1).join(' '); });
+}
+addEventListener('resize', () => { if (UI.tab === 'set') render(true); });
 
 /* ---------- record sheet ---------- */
 function openRecord(k, mode){
@@ -1249,12 +1286,20 @@ function endTut(){ document.getElementById('tut').hidden = true; S.settings.tutS
 
 /* ---------- name ---------- */
 function openName(){
+  let av = S.settings.avatar || '';
+  const opts = [''].concat(AVATARS);
   openSheet(`${sheetHead(t('nameTitle'))}<form id="nameForm" novalidate style="display:flex;flex-direction:column;gap:14px">
     <input class="tin" id="nm" maxlength="20" aria-label="${t('nameTitle')}" placeholder="${t('namePh')}" value="${esc(S.settings.name || '')}" style="flex:none">
+    <p class="flabel">${t('avatarTitle')}</p>
+    <div class="avpick" role="group" aria-label="${t('avatarTitle')}">${opts.map(e => `<button type="button" data-av="${e}" aria-pressed="${e === av}" aria-label="${e || t('avatarNone')}">${e || `<svg class="avnone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`}</button>`).join('')}</div>
     <button class="primary" type="submit">${t('save')}</button></form>`, sh => {
-    sh.querySelector('#nameForm').addEventListener('submit', e => { e.preventDefault(); S.settings.name = sh.querySelector('#nm').value.trim(); persist(); closeSheet(); render(true); toast(t('saved')); });
-    setTimeout(() => sh.querySelector('#nm').focus(), 250);
+    const nm = sh.querySelector('#nm');
+    sh.querySelectorAll('[data-av]').forEach(b => b.addEventListener('click', () => { av = b.dataset.av; sh.querySelectorAll('[data-av]').forEach(x => x.setAttribute('aria-pressed', x === b)); }));
+    sh.querySelector('#nameForm').addEventListener('submit', e => { e.preventDefault(); S.settings.name = nm.value.trim(); S.settings.avatar = av; persist(); closeSheet(); render(true); toast(t('saved')); });
   });
+}
+const AVATARS = ['🐋','🐢','🐇','🐕','🐈','🍀','🌻','✨','⚡️','🔥','🌈'];
+function avatarInner(){ const st = S.settings; return st.avatar ? st.avatar : svg('user');
 }
 /* ---------- date picker ---------- */
 let dp = null;
@@ -1402,7 +1447,7 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-act]'); if (!el) return;
   const a = el.dataset.act, v = el.dataset.v;
   switch (a) {
-    case 'tab': UI.tab = v; closeSwipes(); render(); break;
+    case 'tab': if (v !== UI.tab) { const d = new Date(); UI.calY = UI.listY = d.getFullYear(); UI.calM = UI.listM = d.getMonth(); UI.listN = 1; } UI.tab = v; closeSwipes(); render(); break;
     case 'toggleHide': S.settings.hideNum = !S.settings.hideNum; persist(); render(true); break;
     case 'recordToday': openRecord(todayK(), 'new'); break;
     case 'addRecord': openRecord(todayK(), 'new'); break;
@@ -1437,8 +1482,8 @@ document.addEventListener('click', e => {
     case 'resetRange': UI.custom = null; closeSheet(); render(true); break;
     case 'items': S.settings.items = v; persist(); render(true); break;
     case 'theme': S.settings.theme = v; persist(); render(true); break;
-    case 'dstyle': S.settings.darkStyle = v; persist(); render(true); break;
-    case 'lstyle': S.settings.lightStyle = v; persist(); render(true); break;
+    case 'dstyle': S.settings.darkStyle = v; if (S.settings.theme === 'light') S.settings.theme = 'dark'; persist(); render(true); break;
+    case 'lstyle': S.settings.lightStyle = v; if (S.settings.theme === 'dark') S.settings.theme = 'light'; persist(); render(true); break;
     case 'fs': S.settings.fs = v; persist(); render(true); break;
     case 'newRange': openRange(); break;
     case 'openArch': openArch(el.dataset.id); break;
@@ -1475,6 +1520,19 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (docume
 
 /* ---------- boot ---------- */
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => render(true)); } catch(_) {}
+/* Swipe left/right on the Calendar tab or in a date picker to change month (left = next, right = previous). */
+let swp = null;
+document.addEventListener('touchstart', e => { if (e.touches.length !== 1) { swp = null; return; } const tg = e.target, inDp = tg.closest && tg.closest('.dpinline'), inCal = UI.tab === 'cal' && tg.closest && tg.closest('#view') && !document.querySelector('.sheet.open, .sheetwrap.open');
+  if ((!inDp && !inCal) || (tg.closest && tg.closest('.dpov'))) { swp = null; return; } swp = { x:e.touches[0].clientX, y:e.touches[0].clientY, dp:!!inDp, t:Date.now() }; }, { passive:true });
+document.addEventListener('touchend', e => { if (!swp) return; const s = swp; swp = null; const tch = e.changedTouches[0], dx = tch.clientX - s.x, dy = tch.clientY - s.y;
+  if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5 || Date.now() - s.t > 800) return;
+  const v = dx < 0 ? '1' : '-1', btn = s.dp ? document.querySelector(`.dpinline [data-act="dpNav"][data-v="${v}"]`) : document.querySelector(`[data-act="monNav"][data-ctx="cal"][data-v="${v}"]`);
+  if (btn && !btn.disabled) btn.click(); }, { passive:true });
+/* Keep the app at a fixed scale: block pinch and double-tap zoom. */
+['gesturestart','gesturechange','gestureend'].forEach(ev => document.addEventListener(ev, e => e.preventDefault(), { passive:false }));
+document.addEventListener('touchmove', e => { if (e.touches && e.touches.length > 1) e.preventDefault(); }, { passive:false });
+let lastTouchEnd = 0; document.addEventListener('touchend', e => { const n = Date.now(); if (n - lastTouchEnd < 320 && !e.target.closest('input,textarea')) e.preventDefault(); lastTouchEnd = n; }, { passive:false });
+document.addEventListener('dblclick', e => e.preventDefault(), { passive:false });
 render();
 checkGoal(true);
 if (!S.settings.tutSeen) showTut(0);
